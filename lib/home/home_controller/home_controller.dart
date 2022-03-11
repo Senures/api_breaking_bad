@@ -30,4 +30,10 @@ class HomeController extends GetxController {
     homelist = await HomeService().fetchSearch(controller.text);
     setIsLoading(false);
   }
+
+  searchClear(){
+    controller.clear();
+    homeApiGet();
+    
+  }
 }
