@@ -1,4 +1,4 @@
-import 'package:breaking_bad_api/detail/detail_view.dart';
+import 'package:breaking_bad_api/detail/detail_view/detail_view.dart';
 import 'package:breaking_bad_api/home/home_controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
