@@ -20,25 +20,24 @@ class DetailView extends StatelessWidget {
               appBar: AppBar(
                   leading: Padding(
                     padding: const EdgeInsets.all(7.0),
-                    child: Container(
-                      child: IconButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
-                          )),
-                    ).asGlass(
-                      tintColor: Colors.transparent,
-                    ),
+                    child: IconButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                            ))
+                        .asGlass(
+                            tintColor: Colors.transparent,
+                            clipBorderRadius: BorderRadius.circular(10.0)),
                   ),
                   elevation: 0,
                   backgroundColor: Colors.transparent),
               body: dc.isloading
                   ? Center(
                       child: CustomCircular(color: const Color(0xffddcb93)))
-                  : Container(
+                  : SizedBox(
                       width: Get.size.width,
                       height: Get.size.height,
                       child: Stack(
@@ -56,7 +55,7 @@ class DetailView extends StatelessWidget {
                             child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20.0, vertical: 10.0),
-                                child: Container(
+                                child: SizedBox(
                                   width: Get.size.width,
                                   height: Get.size.height * 0.3,
                                   child: Padding(

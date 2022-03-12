@@ -25,7 +25,7 @@ class HomeView extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(
+                              SizedBox(
                                   width: Get.size.width * 0.8,
                                   height: Get.size.height * 0.3,
                                   //color: Colors.red,
@@ -40,7 +40,9 @@ class HomeView extends StatelessWidget {
                                   style: ElevatedButton.styleFrom(
                                     primary: const Color(0xffddcb93),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    hc.searchClear();
+                                  },
                                   child: const Text(
                                     "Back to home",
                                     style: TextStyle(color: Colors.white),
@@ -59,24 +61,32 @@ buildApbbar() {
     elevation: 0.0,
     backgroundColor: const Color(0xffddcb93),
     centerTitle: true,
-    title: TextFormField(
-      style: const TextStyle(color: Colors.white, fontSize: 17.0),
-      cursorColor: Colors.white,
-      controller: hc.controller,
-      decoration: InputDecoration(
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 18.0, horizontal: 18.0),
-        hintText: "Search characters",
-        hintStyle: const TextStyle(color: Colors.white, fontSize: 17.0),
-        border: InputBorder.none,
-        suffixIcon: IconButton(
-            onPressed: () {
-              hc.searchApiGet();
-            },
-            icon: const Icon(
-              Icons.search,
-              color: Colors.white,
-            )),
+    title: Container(
+      decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.8),
+          borderRadius: BorderRadius.circular(10.0)),
+      child: TextFormField(
+        style: const TextStyle(color: Color(0xffddcb93), fontSize: 17.0),
+        cursorColor: const Color(0xffddcb93),
+        controller: hc.controller,
+        decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 18.0, horizontal: 18.0),
+          hintText: "Search characters",
+          hintStyle: const TextStyle(
+              color: Color(0xffddcb93),
+              fontSize: 17.0,
+              fontWeight: FontWeight.w600),
+          border: InputBorder.none,
+          suffixIcon: IconButton(
+              onPressed: () {
+                hc.searchApiGet();
+              },
+              icon: const Icon(
+                Icons.search,
+                color: Color(0xffddcb93),
+              )),
+        ),
       ),
     ),
   );
@@ -84,78 +94,81 @@ buildApbbar() {
 
 buildBodyList() {
   var hc = Get.put(HomeController());
-  return ParallaxArea(
-    child: ListView.builder(
-        itemCount: hc.homelist!.length,
-        scrollDirection: Axis.vertical,
-        itemBuilder: (context, index) {
-          var item = hc.homelist![index];
-          return InkWell(
-              onTap: () {
-                Get.to(() => DetailView(
-                      characterId: item.charId!,
-                    ));
-              },
-              child: ParallaxWidget(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                      width: Get.size.width,
-                      height: 200.0,
-                      child: Stack(
-                        children: [
-                          Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Text(
-                                item.name!,
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.w700),
-                              ))
-                        ],
-                      )),
-                ),
-                overflowWidthFactor: 1,
-                background: Image.network(item.img!, fit: BoxFit.cover,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                  if (loadingProgress == null) {
-                    return child;
-                  }
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10.0),
+    child: ParallaxArea(
+      child: ListView.builder(
+          itemCount: hc.homelist!.length,
+          scrollDirection: Axis.vertical,
+          itemBuilder: (context, index) {
+            var item = hc.homelist![index];
+            return InkWell(
+                onTap: () {
+                  Get.to(() => DetailView(
+                        characterId: item.charId!,
+                      ));
+                },
+                child: ParallaxWidget(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                        width: Get.size.width,
+                        height: 200.0,
+                        child: Stack(
+                          children: [
+                            Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Text(
+                                  item.name!,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w700),
+                                ))
+                          ],
+                        )),
+                  ),
+                  overflowWidthFactor: 1,
+                  background: Image.network(item.img!, fit: BoxFit.cover,
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    }
 
-                  return Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CustomCircular(
-                          color: Colors.white,
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            loadingProgress.expectedTotalBytes != null
-                                ? ((loadingProgress.cumulativeBytesLoaded /
-                                            loadingProgress
-                                                .expectedTotalBytes!) *
-                                        100)
-                                    .toStringAsFixed(0)
-                                : "",
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.w700),
+                    return Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CustomCircular(
+                            color: Colors.white,
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                : null,
                           ),
-                        )
-                      ],
-                    ),
-                  );
-                }),
-              ));
-        }),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              loadingProgress.expectedTotalBytes != null
+                                  ? ((loadingProgress.cumulativeBytesLoaded /
+                                              loadingProgress
+                                                  .expectedTotalBytes!) *
+                                          100)
+                                      .toStringAsFixed(0)
+                                  : "",
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }),
+                ));
+          }),
+    ),
   );
 }
